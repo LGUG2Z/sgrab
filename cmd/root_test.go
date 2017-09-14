@@ -19,7 +19,7 @@ import (
 var _ = Describe("SGrab", func() {
 	Describe("When run without the required flags", func() {
 		It("Should return an error", func() {
-			err := SGrab(nil, Flags{}, nil, sonarr.Client{})
+			err := SGrab(nil, Flags{}, sonarr.Client{})
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(Equal(ErrInformationMissing.Error()))
 
@@ -49,7 +49,7 @@ var _ = Describe("SGrab", func() {
 				Username:   "ccc",
 			}
 
-			err := SGrab(nil, f, nil, sonarr)
+			err := SGrab(nil, f, sonarr)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(Equal(ErrCouldNotFindSeries("Not a Real Series").Error()))
 
@@ -96,10 +96,7 @@ var _ = Describe("SGrab", func() {
 				Client: http.Client{},
 			}
 
-			key, err := GetKeyFile(f.SSHKeyLocation)
-			Expect(err).ToNot(HaveOccurred())
-
-			err = SGrab(afero.NewMemMapFs(), f, key, sonarr)
+			err = SGrab(afero.NewMemMapFs(), f, sonarr)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(Equal(ErrCredentialsRejected.Error()))
 		})
@@ -130,10 +127,7 @@ var _ = Describe("SGrab", func() {
 				Client: http.Client{},
 			}
 
-			key, err := GetKeyFile(f.SSHKeyLocation)
-			Expect(err).ToNot(HaveOccurred())
-
-			Expect(SGrab(afero.NewMemMapFs(), f, key, sonarr)).To(Succeed())
+			Expect(SGrab(afero.NewMemMapFs(), f, sonarr)).To(Succeed())
 		})
 	})
 

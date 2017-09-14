@@ -15,7 +15,6 @@ import (
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"golang.org/x/crypto/ssh"
 )
 
 var RootCmd = &cobra.Command{
@@ -24,12 +23,6 @@ var RootCmd = &cobra.Command{
 	Long:  ``,
 	Args:  cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		sshKey, err := GetKeyFile(rootFlags.SSHKeyLocation)
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-
 		// Allow self signed certs
 		sonarrClient := sonarr.Client{
 			APIKey: rootFlags.APIKey,
@@ -43,14 +36,19 @@ var RootCmd = &cobra.Command{
 
 		fs := afero.NewOsFs()
 
-		if err := SGrab(fs, rootFlags, sshKey, sonarrClient); err != nil {
+		if err := SGrab(fs, rootFlags, sonarrClient); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
 	},
 }
 
-func SGrab(fs afero.Fs, f Flags, k ssh.Signer, c sonarr.SonarrClient) error {
+func SGrab(fs afero.Fs, f Flags, c sonarr.SonarrClient) error {
+	k, err := getKeyFile(f.SSHKeyLocation)
+	if err != nil {
+		return err
+	}
+
 	if !hasRequiredFlags(f) {
 		return ErrInformationMissing
 	}

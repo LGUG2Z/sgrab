@@ -10,8 +10,6 @@ import (
 	"github.com/pkg/sftp"
 	pb "gopkg.in/cheggaaa/pb.v1"
 
-	"os/user"
-
 	"bufio"
 	"fmt"
 	"os"
@@ -45,15 +43,7 @@ func urlWithSlash(url string) string {
 	return url
 }
 
-func GetKeyFile(location string) (key ssh.Signer, err error) {
-	if len(location) < 1 {
-		usr, err := user.Current()
-		if err != nil {
-			return nil, err
-		}
-		location = usr.HomeDir + "/.ssh/id_rsa"
-	}
-
+func getKeyFile(location string) (key ssh.Signer, err error) {
 	buf, err := ioutil.ReadFile(location)
 	if err != nil {
 		return nil, err
