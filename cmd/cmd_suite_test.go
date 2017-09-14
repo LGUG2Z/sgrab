@@ -63,5 +63,5 @@ var _ = AfterSuite(func() {
 
 	fs := afero.NewOsFs()
 	Expect(fs.Remove(fmt.Sprintf("%s/%s", projectPath, "Vagrantfile"))).To(Succeed())
-	Expect(fs.Remove(fmt.Sprintf("%s/%s", projectPath, ".vagrant"))).To(Succeed())
+	Expect(fs.RemoveAll(fmt.Sprintf("%s/%s", projectPath, ".vagrant"))).To(Succeed())
 })

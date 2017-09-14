@@ -103,18 +103,18 @@ func getHostKey(fs afero.Fs, host string) (ssh.PublicKey, error) {
 func copyFile(fs afero.Fs, f Flags, k ssh.Signer, e, dstPath string) error {
 	// Make sure there is an entry for the seedbox in $HOME/.ssh/known_hosts before connecting
 	// Comment out when running test with Vagrant
-	//hostKey, err := getHostKey(fs, f.SeedboxURL)
-	//if err != nil {
-	//	return err
-	//}
+	hostKey, err := getHostKey(fs, f.SeedboxURL)
+	if err != nil {
+		return err
+	}
 
 	sshConfig := &ssh.ClientConfig{
 		User: f.Username,
 		Auth: []ssh.AuthMethod{
 			ssh.PublicKeys(k),
 		},
-		HostKeyCallback: ssh.InsecureIgnoreHostKey(), // Use this when running tests with Vagrant
-		//HostKeyCallback: ssh.FixedHostKey(hostKey),
+		//HostKeyCallback: ssh.InsecureIgnoreHostKey(), // Use this when running tests with Vagrant
+		HostKeyCallback: ssh.FixedHostKey(hostKey),
 	}
 
 	// Make an SSH connection
