@@ -9,8 +9,6 @@ import (
 	. "github.com/onsi/gomega"
 
 	"testing"
-
-	"github.com/spf13/afero"
 )
 
 func TestCmd(t *testing.T) {
@@ -60,8 +58,4 @@ var _ = AfterSuite(func() {
 	}
 
 	Expect(err).ToNot(HaveOccurred())
-
-	fs := afero.NewOsFs()
-	Expect(fs.Remove(fmt.Sprintf("%s/%s", projectPath, "Vagrantfile"))).To(Succeed())
-	Expect(fs.RemoveAll(fmt.Sprintf("%s/%s", projectPath, ".vagrant"))).To(Succeed())
 })

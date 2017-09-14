@@ -44,11 +44,6 @@ var RootCmd = &cobra.Command{
 }
 
 func SGrab(fs afero.Fs, f Flags, c sonarr.SonarrClient) error {
-	k, err := getKeyFile(f.SSHKeyLocation)
-	if err != nil {
-		return err
-	}
-
 	if !hasRequiredFlags(f) {
 		return ErrInformationMissing
 	}
@@ -74,6 +69,11 @@ func SGrab(fs afero.Fs, f Flags, c sonarr.SonarrClient) error {
 	}
 
 	episodeFile, err := c.EpisodeFile(episodeFileID)
+	if err != nil {
+		return err
+	}
+
+	k, err := getKeyFile(f.SSHKeyLocation)
 	if err != nil {
 		return err
 	}
