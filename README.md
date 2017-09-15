@@ -49,7 +49,7 @@ Flags:
 ```
 
 ## Usage
-The key at $HOME/.ssh/id_rsa is used to establish a secure connection to the
+The key at `$HOME/.ssh/id_rsa` is used to establish a secure connection to the
 seedbox to download the file. A different key can be provided using the `--ssh-key`
 flag.
 
