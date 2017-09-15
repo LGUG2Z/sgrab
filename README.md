@@ -56,6 +56,10 @@ flag.
 sgrab will by default try to connect to the seedbox on port 22. An alternative
 port can be specified using the `--port` flag.
 
+For sgrab to make a successful connection to download the requested file, the
+seedbox should have been connected to before via SSH and an entry for the seedbox
+should exist in `$HOME/.ssh/known_hosts`.
+
 The `--series` flag is case-insensitive, however the name of the series must
 otherwise match the primary name given to a series by Sonarr. Series that have
 multi-word titles should be quoted.

@@ -21,7 +21,12 @@ import (
 )
 
 func hasRequiredFlags(f Flags) bool {
-	return len(f.SeedboxURL) > 0 && len(f.SonarrURL) > 0 && len(f.APIKey) > 0 && len(f.Username) > 0
+	return len(f.SeedboxURL) > 0 &&
+		len(f.SonarrURL) > 0 &&
+		len(f.APIKey) > 0 &&
+		len(f.Username) > 0 &&
+		len(f.Series) > 0 &&
+		len(f.Episode) > 0
 }
 
 type Flags struct {
