@@ -35,7 +35,7 @@ export SGRAB_USERNAME=xxx
 ```
 
 Or set using the relevant flags
-```bash
+```
 Flags:
       --api-key string    Sonarr API key
   -e, --episode string    Episode number
