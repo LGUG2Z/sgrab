@@ -19,9 +19,39 @@ import (
 
 var RootCmd = &cobra.Command{
 	Use:   "sgrab",
-	Short: "sgrab is a command line utility to grab episodes from a seedbox running Sonarr.",
-	Long:  ``,
-	Args:  cobra.NoArgs,
+	Short: "Grab episodes from a seedbox running Sonarr.",
+	Long: `sgrab is a command line utility for grabbing episodes of TV shows from a seedbox
+running Sonarr.
+
+In order to use sgrab the following information is required:
+
+Sonarr URL (format "http://mybox.com/sonarr/")
+  - "export SGRAB_SONARR=xxx" in your shell rc or use the --sonarr flag
+Sonarr API key
+  - "export SGRAB_API_KEY=xxx" in your shell rc or use the --api-key flag
+Seedbox addresses
+  - "export SGRAB_SEEDBOX=xxx" in your shell rc or use the --seedbox flag
+Seedbox login username
+  - "export SGRAB_USERNAME=xxx" in your shell rc or use the --username flag
+
+The key at $HOME/.ssh/id_rsa is used to establish a secure connection to the
+seedbox to download the file. A different key can be provided using the --ssh-key
+flag.
+
+sgrab will by default try to connect to the seedbox on port 22. An alternative
+port can be specified using the --port flag.
+
+The --series flag is case-insensitive, however the name of the series must
+otherwise match the primary name given to a series by Sonarr. Series that have
+multi-word titles should be quoted.
+
+The --episode flag uses the format "s01e02", with mandatory leading zeroes.
+
+Example:
+
+sgrab --series "Terrace House: Boys x Girls Next Door" --episode s01e01
+`,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Allow self signed certs
 		sonarrClient := sonarr.Client{
@@ -132,7 +162,7 @@ func init() {
 	viper.SetEnvPrefix("sgrab")
 	viper.AutomaticEnv()
 
-	RootCmd.Flags().StringVar(&rootFlags.SonarrURL, "sonarr", viper.GetString("sonarr_url"), "Sonarr url")
+	RootCmd.Flags().StringVar(&rootFlags.SonarrURL, "sonarr", viper.GetString("sonarr"), "Sonarr url")
 	RootCmd.Flags().StringVar(&rootFlags.APIKey, "api-key", viper.GetString("api_key"), "Sonarr API key")
 	RootCmd.Flags().StringVarP(&rootFlags.Series, "series", "s", "", "Series name")
 	RootCmd.Flags().StringVarP(&rootFlags.Episode, "episode", "e", "", "Episode number (format \"s01e02\")")
